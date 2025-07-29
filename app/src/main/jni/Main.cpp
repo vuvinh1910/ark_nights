@@ -1,0 +1,221 @@
+#include <thread>
+#include <EGL/egl.h>
+#include <GLES3/gl3.h>
+#include "Call_Me.h"
+#include "Hook.h"
+#include "Zygisk.hpp"
+
+using zygisk::Api;
+using zygisk::AppSpecializeArgs;
+using zygisk::ServerSpecializeArgs;
+
+class MyModule : public zygisk::ModuleBase {
+public:
+	void onLoad(Api *api, JNIEnv *env) override {
+		this->api = api;
+		this->env = env;
+	}
+
+	void preAppSpecialize(AppSpecializeArgs *args) override {
+		auto package_name = env->GetStringUTFChars(args->nice_name, nullptr);
+		auto app_data_dir = env->GetStringUTFChars(args->app_data_dir, nullptr);
+		preSpecialize(package_name, app_data_dir);
+		env->ReleaseStringUTFChars(args->nice_name, package_name);
+		env->ReleaseStringUTFChars(args->app_data_dir, app_data_dir);
+	}
+
+	void postAppSpecialize(const AppSpecializeArgs *) override {
+		if (enable_hack) {
+			std::thread hack_thread(hack_prepare, game_data_dir, data, length);
+			hack_thread.detach();
+		}
+	}
+
+private:
+	Api *api;
+	JNIEnv *env;
+	bool enable_hack;
+	char *game_data_dir;
+	void *data;
+	size_t length;
+
+	void preSpecialize(const char *package_name, const char *app_data_dir) {
+		if (strcmp(package_name, "com.YoStarEN.Arknights") == 0 || strcmp(package_name, "com.YoStarJP.Arknights") == 0) {
+			LOGI("detect game: %s", package_name);
+			enable_hack = true;
+			game_data_dir = new char[strlen(app_data_dir) + 1];
+			strcpy(game_data_dir, app_data_dir);
+
+#if defined(__i386__)
+			auto path = "zygisk/armeabi-v7a.so";
+#endif
+#if defined(__x86_64__)
+			auto path = "zygisk/arm64-v8a.so";
+#endif
+#if defined(__i386__) || defined(__x86_64__)
+			int dirfd = api->getModuleDir();
+			int fd = openat(dirfd, path, O_RDONLY);
+			if (fd != -1) {
+				struct stat sb{};
+				fstat(fd, &sb);
+				length = sb.st_size;
+				data = mmap(nullptr, length, PROT_READ, MAP_PRIVATE, fd, 0);
+				close(fd);
+			} else {
+				LOGW("Unable to open arm file");
+			}
+#endif
+		} else {
+			api->setOption(zygisk::Option::DLCLOSE_MODULE_LIBRARY);
+		}
+	}
+};
+
+REGISTER_ZYGISK_MODULE(MyModule)
+
+EGLBoolean (*orig_eglSwapBuffers)(EGLDisplay dpy, EGLSurface surface);
+EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
+{
+	eglQuerySurface(dpy, surface, EGL_WIDTH, &glWidth);
+	eglQuerySurface(dpy, surface, EGL_HEIGHT, &glHeight);
+	
+	static bool setup = false;
+	static bool menu = true;
+	
+	if (!setup)
+	{
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		SetDarkBlueUITheme();
+		
+		io.Fonts->AddFontFromMemoryTTF(Inter, sizeof(Inter), 28.f, NULL, io.Fonts->GetGlyphRangesVietnamese());
+		interbold = io.Fonts->AddFontFromMemoryTTF(InterBold, sizeof(InterBold), 28.f, NULL, io.Fonts->GetGlyphRangesVietnamese());
+		
+		io.KeyMap[ImGuiKey_UpArrow] = 19;
+		io.KeyMap[ImGuiKey_DownArrow] = 20;
+		io.KeyMap[ImGuiKey_LeftArrow] = 21;
+		io.KeyMap[ImGuiKey_RightArrow] = 22;
+		io.KeyMap[ImGuiKey_Enter] = 66;
+		io.KeyMap[ImGuiKey_Backspace] = 67;
+		io.KeyMap[ImGuiKey_Escape] = 111;
+		io.KeyMap[ImGuiKey_Delete] = 112;
+		io.KeyMap[ImGuiKey_Home] = 122;
+		io.KeyMap[ImGuiKey_End] = 123;
+		
+		ImGui_ImplOpenGL3_Init("#version 300 es");
+		ImGui::GetStyle().ScaleAllSizes(3.0f);
+		loadImages();
+		setup = true;
+	}
+	
+	ImGuiIO& io = ImGui::GetIO();
+	static bool WantTextInputLast = false;
+	if (io.WantTextInput && !WantTextInputLast) ShowSoftKeyboardInput();
+	WantTextInputLast = io.WantTextInput;
+
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplAndroid_NewFrame(glWidth, glHeight);
+	ImGui::NewFrame();
+	
+	ui_dpi_scale = ImLerp(ui_dpi_scale , menu ? 1.1f : 0.4f, 0.5f * (10.0f * ImGui::GetIO().DeltaTime));
+	
+	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) window_flags = menu ? ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar : ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
+	if (ui_dpi_scale < 0.5f) window_flags = menu ? ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar : ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground;
+	
+	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) ImGui::SetNextWindowSize(ImVec2(700 * ui_dpi_scale, 600 * ui_dpi_scale));
+	if (ui_dpi_scale < 0.5f) ImGui::SetNextWindowSize(ImVec2(700 * ui_dpi_scale - 100, 600 * ui_dpi_scale - 80));
+	
+	if (ImGui::Begin(OBFUSCATE("Menu"), nullptr, window_flags))
+	{
+		ImGui::Columns(2);
+		ImGui::SetColumnOffset(1, 170);
+		
+		CircleImage(Logo.textureId, 120);
+		if (ImGui::IsItemHovered() && IsClickOrHold() == 0) menu = !menu;
+		
+		static ImVec4 active = to_vec4(0, 150, 255, 255);
+		static ImVec4 inactive = to_vec4(0, 0, 0, 0);
+		static int Tab = 1;
+		
+		ImGui::Spacing();
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.6f);
+		ImGui::PushStyleColor(ImGuiCol_Button, Tab == 1 ? active : inactive);
+		if (ImGui::Button(oxorany("VISUAL"), ImVec2(120, 50))) Tab = 1;
+		ImGui::PopStyleVar();
+		
+		ImGui::NextColumn();
+		
+		ImVec2 contentRegion = ImGui::GetContentRegionAvail();
+		ImVec2 textSize = ImGui::CalcTextSize(window_name);
+		
+		float cursorX = ImGui::GetCursorPosX();
+		float textPosX = cursorX + (contentRegion.x - textSize.x) / 2.0f;
+		
+		ImGui::PushFont(interbold);
+		if (ui_dpi_scale > 0.5f) ImGui::SetCursorPosX(textPosX);
+		ImGui::Text(window_name);
+		ImGui::PopFont();
+		
+		if (Tab == 1) {
+			ImGui::Text(oxorany("Damage Multiplie"));
+			ImGui::SliderInt(oxorany("##PDamage"), &dmg, 1, 1000);
+			ImGui::Text(oxorany("Defense Multiplie"));
+			ImGui::SliderInt(oxorany("##PDefense"), &defense, 1, 1000);
+			ImGui::Text(oxorany("Attack Speed Multiplie"));
+			ImGui::SliderInt(oxorany("##PSpeed"), &attacksp, 1, 100);
+			
+			ImGui::Checkbox(oxorany("No Deploy Costs"), &deploy);
+			ImGui::Checkbox(oxorany("Frozen Enemies"), &frozen);
+			ImGui::Checkbox(oxorany("Auto Win"), &autowin);
+		}
+		
+		ImGui::End();
+	}
+	
+	ImGui::Render();
+	ImGui::EndFrame();
+	
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &glWidth);
+	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &glHeight);
+	
+	io.KeysDown[io.KeyMap[ImGuiKey_UpArrow]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_DownArrow]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_LeftArrow]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_RightArrow]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_Enter]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_Backspace]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_Delete]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_Escape]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_Home]] = false;
+	io.KeysDown[io.KeyMap[ImGuiKey_End]] = false;
+	return orig_eglSwapBuffers(dpy, surface);
+}
+
+ProcMap il2cppMap;
+void *Init_thread()
+{
+	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libandroid.so"), OBFUSCATE("ANativeWindow_getWidth")), (void *) _ANativeWindow_getWidth, (void **) &orig_ANativeWindow_getWidth);
+	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libandroid.so"), OBFUSCATE("ANativeWindow_getHeight")), (void *) _ANativeWindow_getHeight, (void **) &orig_ANativeWindow_getHeight);
+	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libEGL.so"), OBFUSCATE("eglSwapBuffers")), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
+
+	while (!il2cppMap.isValid()) {
+		il2cppMap = KittyMemory::getLibraryBaseMap("libil2cpp.so");
+		sleep(1);
+	}
+	
+	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libEGL.so"), OBFUSCATE("eglSwapBuffers")), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
+	
+	Attach();
+	PollUnicodeChars();
+
+	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_atk"), 0), (void *) get_atk , (void **) &_get_atk);
+	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_isFrozen"), 0), (void *) get_isFrozen , (void **) &_get_isFrozen);
+	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_attackSpeed"), 0), (void *) get_attackSpeed , (void **) &_get_attackSpeed);
+	sideType = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BObject") , oxorany("<side>k__BackingField"));
+	
+	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
+	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("Update"), 0), (void *) BattleController , (void **) &_BattleController);
+
+	return nullptr;
+}
