@@ -138,10 +138,11 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 		static int Tab = 1;
 		
 		ImGui::Spacing();
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.6f);
-		ImGui::PushStyleColor(ImGuiCol_Button, Tab == 1 ? active : inactive);
-		if (ImGui::Button(oxorany("VISUAL"), ImVec2(120, 50))) Tab = 1;
-		ImGui::PopStyleVar();
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.6f);
+        ImGui::PushStyleColor(ImGuiCol_Button, Tab == 1 ? active : inactive);
+        if (ImGui::Button(oxorany("VISUAL"), ImVec2(120, 50))) Tab = 1;
+        ImGui::PopStyleColor();
+        ImGui::PopStyleVar();
 		
 		ImGui::NextColumn();
 		
@@ -155,21 +156,26 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 		if (ui_dpi_scale > 0.5f) ImGui::SetCursorPosX(textPosX);
 		ImGui::Text(window_name);
 		ImGui::PopFont();
-		
-		if (Tab == 1) {
-			ImGui::Text(oxorany("Damage Multiplie"));
-			ImGui::SliderInt(oxorany("##PDamage"), &dmg, 1, 1000);
-			ImGui::Text(oxorany("Defense Multiplie"));
-			ImGui::SliderInt(oxorany("##PDefense"), &defense, 1, 1000);
-			ImGui::Text(oxorany("Attack Speed Multiplie"));
-			ImGui::SliderInt(oxorany("##PSpeed"), &attacksp, 1, 100);
-			
-			ImGui::Checkbox(oxorany("No Deploy Costs"), &deploy);
-			ImGui::Checkbox(oxorany("Frozen Enemies"), &frozen);
-			ImGui::Checkbox(oxorany("Auto Win"), &autowin);
-		}
-		
-		ImGui::End();
+
+        if (Tab == 1) {
+            ImGui::Text(oxorany("Damage Multiplie"));
+            ImGui::SliderInt(oxorany("##PDamage"), &dmg, 1, 1000);
+
+            ImGui::Text(oxorany("Defense Multiplie"));
+            ImGui::SliderInt(oxorany("##PDefense"), &defense, 1, 1000);
+
+            ImGui::Text(oxorany("Attack Speed Multiplie (before battle)"));
+            ImGui::SliderInt(oxorany("##PSpeed"), &attacksp, 1, 100);
+
+            ImGui::Text(oxorany("SP Recovery Multiplie"));
+            ImGui::SliderInt(oxorany("##PSpRecovery"), &sp_recovery, 1, 100);
+
+            ImGui::Checkbox(oxorany("No Deploy Costs"), &deploy);
+            ImGui::Checkbox(oxorany("Frozen Enemies"), &frozen);
+            ImGui::Checkbox(oxorany("Auto Win"), &autowin);
+        }
+
+        ImGui::End();
 	}
 	
 	ImGui::Render();
@@ -212,10 +218,12 @@ void *Init_thread()
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_atk"), 0), (void *) get_atk , (void **) &_get_atk);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_isFrozen"), 0), (void *) get_isFrozen , (void **) &_get_isFrozen);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_attackSpeed"), 0), (void *) get_attackSpeed , (void **) &_get_attackSpeed);
-	sideType = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BObject") , oxorany("<side>k__BackingField"));
-	
-	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
-	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("Update"), 0), (void *) BattleController , (void **) &_BattleController);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity.SpController") , oxorany("_RecoverMp"), 2), (void *) SkillPointController , (void **) &_SkillPointController);
+    sideType = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BObject") , oxorany("<side>k__BackingField"));
+    m_owner = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity.SpController") , oxorany("m_owner"));
+
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
+	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("OnTick"), 0), (void *) BattleController , (void **) &_BattleController);
 
 	return nullptr;
 }

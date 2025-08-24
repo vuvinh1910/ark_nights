@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="backgroundColor">#202020</color>
+    <string name="app_name">ImGui</string>
+    <style name="Theme.Application" parent="@android:style/Theme.Material">
+        
+        <item name="android:background">@color/backgroundColor</item>
+    </style>
+</resources>

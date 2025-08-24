@@ -14,8 +14,10 @@
 	auto window_name = OBFUSCATE("Tuấn Meta | @ZTRChannel [X32]");
 #endif
 
-int dmg = 1, defense = 1, attacksp = 1;
+int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
 bool frozen, deploy, autowin;
+uintptr_t sideType;
+uintptr_t m_owner;
 
 enum class GameResult
 {
@@ -37,7 +39,37 @@ struct FP {
 	long _serializedValue; //0x10
 };
 
-uintptr_t sideType;
+struct ACTkByte4 {
+    uint8_t b1;
+    uint8_t b2;
+    uint8_t b3;
+    uint8_t b4;
+};
+
+struct ObscuredFloat {
+    int currentCryptoKey;
+    int hiddenValue;
+    ACTkByte4 hiddenValueOldByte4;
+    bool inited;
+    float fakeValue;
+    bool fakeValueActive;
+};
+
+typedef ObscuredFloat (*opImplicit_Func)(float value);
+static opImplicit_Func ObscuredFloat_op_Implicit = nullptr;
+ObscuredFloat FloatToObscuredFloat(float val) {
+    if (!ObscuredFloat_op_Implicit) {
+        void* addr = Il2Cpp::GetMethodOffset(
+                "ThirdPartyAssembly.dll",
+                "CodeStage.AntiCheat",
+                "ObscuredTypes.ObscuredFloat",
+                "op_Implicit",
+                1
+        );
+        ObscuredFloat_op_Implicit = (opImplicit_Func)addr;
+    }
+    return ObscuredFloat_op_Implicit(val);
+}
 
 FP (*_get_atk)(void *instance);
 FP get_atk(void *instance) {
@@ -91,15 +123,27 @@ bool get_isFrozen(void *instance) {
 
 bool (*_ModifyCost)(void *instance, int value, void *source, void *side, bool forceToDisplayNumber, bool forceToDisplayNegativeNumber);
 bool ModifyCost(void *instance, int value, void *source, void *side, bool forceToDisplayNumber, bool forceToDisplayNegativeNumber){
-	if(instance != NULL && deploy){
-		return false;
-	}
-	return _ModifyCost(instance, value, source, side, forceToDisplayNumber, forceToDisplayNegativeNumber);
+    if(instance != NULL && deploy && value < 0){
+        return false;
+    }
+    return _ModifyCost(instance, value, source, side, forceToDisplayNumber, forceToDisplayNegativeNumber);
 }
 
 void DoFinishGame(void *instance, GameResult result, bool silent) {
-	void (*_DoFinishGame)(void *instance, GameResult result, bool silent) = (void (*)(void *, GameResult, bool))(GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("_DoFinishGame"), 2));
-	return _DoFinishGame(instance, result, silent);
+    void (*_DoFinishGame)(void *, GameResult, bool) =
+    (void (*)(void *, GameResult, bool))(
+            GetMethodOffset(
+                    oxorany("Assembly-CSharp.dll"),
+                    oxorany("Torappu.Battle"),
+                    oxorany("BattleController"),
+                    oxorany("_DoFinishGame"),
+                    2
+            )
+    );
+
+    if (_DoFinishGame != NULL) {
+        _DoFinishGame(instance, result, silent);
+    }
 }
 
 void (*_BattleController)(void *instance);
@@ -108,4 +152,21 @@ void BattleController(void *instance){
 		if (autowin) DoFinishGame(instance, GameResult::WIN, true);
 	}
 	_BattleController(instance);
+}
+
+void (*_SkillPointController)(void *instance, FP value, bool force);
+void SkillPointController(void *instance, FP value, bool force) {
+    if(instance != NULL && sp_recovery > 1) {
+        void* owner = *(void**)((uintptr_t)instance + m_owner);
+        if(owner != NULL) {
+            SideType side = *(SideType*)((uintptr_t)owner + sideType);
+            if(side == SideType::ALLY) {
+                FP newSpRecoveryRate;
+                newSpRecoveryRate._serializedValue = value._serializedValue * sp_recovery;
+                _SkillPointController(instance, newSpRecoveryRate, force);
+                return;
+            }
+        }
+    }
+    _SkillPointController(instance, value, force);
 }

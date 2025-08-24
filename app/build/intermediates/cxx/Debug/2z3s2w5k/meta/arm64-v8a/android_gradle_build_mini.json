@@ -1,0 +1,55 @@
+{
+  "buildFiles": [
+    "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
+    "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\ndk-build.cmd",
+      "NDK_PROJECT_PATH\u003dnull",
+      "APP_BUILD_SCRIPT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
+      "NDK_APPLICATION_MK\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk",
+      "APP_ABI\u003darm64-v8a",
+      "NDK_ALL_ABIS\u003darm64-v8a",
+      "NDK_DEBUG\u003d1",
+      "APP_PLATFORM\u003dandroid-21",
+      "NDK_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj",
+      "NDK_LIBS_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/lib",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\ndk-build.cmd",
+    "NDK_PROJECT_PATH\u003dnull",
+    "APP_BUILD_SCRIPT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
+    "NDK_APPLICATION_MK\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk",
+    "APP_ABI\u003darm64-v8a",
+    "NDK_ALL_ABIS\u003darm64-v8a",
+    "NDK_DEBUG\u003d1",
+    "APP_PLATFORM\u003dandroid-21",
+    "NDK_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj",
+    "NDK_LIBS_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/lib",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "arm64-v8a-debug-arm64-v8a": {
+      "artifactName": "arm64-v8a",
+      "buildCommandComponents": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "APP_PLATFORM\u003dandroid-21",
+        "NDK_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj",
+        "NDK_LIBS_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/lib",
+        "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj/local/arm64-v8a/arm64-v8a.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k\\obj\\local\\arm64-v8a\\arm64-v8a.so",
+      "runtimeFiles": []
+    }
+  }
+}

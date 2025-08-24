@@ -1,0 +1,145 @@
+{
+  "abi": "ARM64_V8A",
+  "info": {
+    "abi": "ARM64_V8A",
+    "bitness": 64,
+    "deprecated": false,
+    "default": true
+  },
+  "cxxBuildFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a",
+  "soFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k\\obj\\local\\arm64-v8a",
+  "soRepublishFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\ndkBuild\\debug\\obj\\local\\arm64-v8a",
+  "abiPlatformVersion": 21,
+  "variant": {
+    "buildSystemArgumentList": [],
+    "cFlagsList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARM64_V8A"
+    ],
+    "buildTargetSet": [],
+    "implicitBuildTargetSet": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "module": {
+      "cxxFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx",
+      "intermediatesBaseFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates",
+      "intermediatesFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx",
+      "gradleModulePathName": ":app",
+      "moduleRootFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app",
+      "moduleBuildFile": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build.gradle",
+      "makeFile": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
+      "buildSystem": "NDK_BUILD",
+      "ndkFolder": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888",
+      "ndkVersion": "24.0.8215888",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultStl": "SYSTEM",
+      "ndkMetaPlatforms": {
+        "min": 19,
+        "max": 32,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29,
+          "R": 30,
+          "S": 31,
+          "Sv2": 32
+        }
+      },
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "cmakeToolchainFile": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\build\\cmake\\android.toolchain.cmake",
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "ARMEABI_V7A": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
+          "ARM64_V8A": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\aarch64-linux-android\\libc++_shared.so",
+          "X86": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\i686-linux-android\\libc++_shared.so",
+          "X86_64": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\x86_64-linux-android\\libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      },
+      "project": {
+        "rootBuildGradleFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights",
+        "sdkFolder": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "ideBuildTargetAbi": "arm64-v8a",
+        "isCmakeBuildCohabitationEnabled": false,
+        "isPrefabEnabled": false
+      },
+      "outputOptions": []
+    },
+    "prefabClassPaths": [],
+    "prefabPackages": [],
+    "prefabPackageConfigurations": [],
+    "stlType": "c++_static",
+    "optimizationTag": "Debug"
+  },
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "prefabFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\prefab\\arm64-v8a",
+  "isActiveAbi": true,
+  "fullConfigurationHash": "2z3s2w5k4l545h213j3u3r1q5l3n1x272w5u1v4o6k5s36dp6k863b5op63",
+  "configurationArguments": [
+    "NDK_PROJECT_PATH\u003dnull",
+    "APP_BUILD_SCRIPT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
+    "NDK_APPLICATION_MK\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk",
+    "APP_ABI\u003darm64-v8a",
+    "NDK_ALL_ABIS\u003darm64-v8a",
+    "NDK_DEBUG\u003d1",
+    "APP_PLATFORM\u003dandroid-21",
+    "NDK_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj",
+    "NDK_LIBS_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/lib"
+  ],
+  "intermediatesParentFolder": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k"
+}

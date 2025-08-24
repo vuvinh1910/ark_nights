@@ -1,0 +1,8 @@
+com.tuanmeta.cheat.app-pngs-0 C:\Users\Administrator\Desktop\ark_nightsv2\app\build\generated\res\pngs\debug
+com.tuanmeta.cheat.app-resValues-1 C:\Users\Administrator\Desktop\ark_nightsv2\app\build\generated\res\resValues\debug
+com.tuanmeta.cheat.app-rs-2 C:\Users\Administrator\Desktop\ark_nightsv2\app\build\generated\res\rs\debug
+com.tuanmeta.cheat.app-packageDebugResources-3 C:\Users\Administrator\Desktop\ark_nightsv2\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.tuanmeta.cheat.app-packageDebugResources-4 C:\Users\Administrator\Desktop\ark_nightsv2\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.tuanmeta.cheat.app-merged_res-5 C:\Users\Administrator\Desktop\ark_nightsv2\app\build\intermediates\merged_res\debug
+com.tuanmeta.cheat.app-debug-6 C:\Users\Administrator\Desktop\ark_nightsv2\app\src\debug\res
+com.tuanmeta.cheat.app-main-7 C:\Users\Administrator\Desktop\ark_nightsv2\app\src\main\res
