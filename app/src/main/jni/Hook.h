@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin;
+bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime;
 uintptr_t sideType;
 uintptr_t m_owner;
 
@@ -169,4 +169,28 @@ void SkillPointController(void *instance, FP value, bool force) {
         }
     }
     _SkillPointController(instance, value, force);
+}
+
+bool (*_get_readyToSpawn)(void *instance);
+bool get_readyToSpawn(void *instance) {
+    if(instance != NULL && freeDeploy) {
+        return true;
+    }
+    return _get_readyToSpawn(instance);
+}
+
+int (*_get_cost)(void *instance);
+int get_cost(void *instance) {
+    if(instance != NULL && noCardCost) {
+        return 0;
+    }
+    return _get_cost(instance);
+}
+
+void (*_OnCardListChanged)(void *instance, void *card);
+void OnCardListChanged(void *instance, void *card) {
+    if (instance != NULL && freeDeploy) {
+        return;
+    }
+    _OnCardListChanged(instance, card);
 }

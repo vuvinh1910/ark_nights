@@ -164,15 +164,17 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
             ImGui::Text(oxorany("Defense Multiplie"));
             ImGui::SliderInt(oxorany("##PDefense"), &defense, 1, 1000);
 
-            ImGui::Text(oxorany("Attack Speed Multiplie (before battle)"));
+            ImGui::Text(oxorany("Attack Speed Multiplie (before deploy)"));
             ImGui::SliderInt(oxorany("##PSpeed"), &attacksp, 1, 100);
 
             ImGui::Text(oxorany("SP Recovery Multiplie"));
             ImGui::SliderInt(oxorany("##PSpRecovery"), &sp_recovery, 1, 100);
 
-            ImGui::Checkbox(oxorany("No Deploy Costs"), &deploy);
+            ImGui::Checkbox(oxorany("No Decrease DP"), &deploy);
+            ImGui::Checkbox(oxorany("0 Card Cost"), &noCardCost);
             ImGui::Checkbox(oxorany("Frozen Enemies"), &frozen);
             ImGui::Checkbox(oxorany("Auto Win"), &autowin);
+            ImGui::Checkbox(oxorany("Free Deploy"), &freeDeploy);
         }
 
         ImGui::End();
@@ -224,6 +226,10 @@ void *Init_thread()
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("OnTick"), 0), (void *) BattleController , (void **) &_BattleController);
+
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_cost"), 0), (void *) get_cost , (void **) &_get_cost);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck") , oxorany("OnCardListChanged"), 1), (void *) OnCardListChanged , (void **) &_OnCardListChanged);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_readyToSpawn"), 0), (void *) get_readyToSpawn , (void **) &_get_readyToSpawn);
 
 	return nullptr;
 }
