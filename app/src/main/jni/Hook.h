@@ -16,8 +16,7 @@
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
 bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime;
-uintptr_t sideType;
-uintptr_t m_owner;
+uintptr_t sideType, m_owner, respawnState;
 
 enum class GameResult
 {
@@ -193,4 +192,12 @@ void OnCardListChanged(void *instance, void *card) {
         return;
     }
     _OnCardListChanged(instance, card);
+}
+
+void (*_CardController)(void *instance, void *deltaTime);
+void CardController(void *instance, void *deltaTime) {
+    if (instance != NULL && noRespawnTime) {
+        *(bool *)((uintptr_t)instance + respawnState) = true;
+    }
+    return _CardController(instance, deltaTime);
 }
