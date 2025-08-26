@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime;
+bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit;
 uintptr_t sideType, m_owner, respawnState;
 
 enum class GameResult
@@ -200,4 +200,17 @@ void CardController(void *instance, void *deltaTime) {
         *(bool *)((uintptr_t)instance + respawnState) = true;
     }
     return _CardController(instance, deltaTime);
+}
+
+FP (*_get_hp)(void *instance);
+FP get_hp(void *instance) {
+    if(instance != NULL && onehit) {
+        SideType side = *(SideType *)((uintptr_t) instance + sideType);
+        if (side == SideType::ENEMY) {
+            FP newValue;
+            newValue._serializedValue = 0;
+            return newValue;
+        }
+    }
+    return _get_hp(instance);
 }

@@ -1,1 +1,2 @@
-make: Nothing to be done for 'arm64-v8a'.
+[arm64-v8a] Compile++      : arm64-v8a <= Main.cpp
+[arm64-v8a] SharedLibrary  : arm64-v8a.so
