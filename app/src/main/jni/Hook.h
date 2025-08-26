@@ -54,22 +54,6 @@ struct ObscuredFloat {
     bool fakeValueActive;
 };
 
-typedef ObscuredFloat (*opImplicit_Func)(float value);
-static opImplicit_Func ObscuredFloat_op_Implicit = nullptr;
-ObscuredFloat FloatToObscuredFloat(float val) {
-    if (!ObscuredFloat_op_Implicit) {
-        void* addr = Il2Cpp::GetMethodOffset(
-                "ThirdPartyAssembly.dll",
-                "CodeStage.AntiCheat",
-                "ObscuredTypes.ObscuredFloat",
-                "op_Implicit",
-                1
-        );
-        ObscuredFloat_op_Implicit = (opImplicit_Func)addr;
-    }
-    return ObscuredFloat_op_Implicit(val);
-}
-
 FP (*_get_atk)(void *instance);
 FP get_atk(void *instance) {
 	if (instance != NULL)
@@ -208,7 +192,7 @@ FP get_hp(void *instance) {
         SideType side = *(SideType *)((uintptr_t) instance + sideType);
         if (side == SideType::ENEMY) {
             FP newValue;
-            newValue._serializedValue = 0;
+            newValue._serializedValue = _get_hp(instance)._serializedValue / INT_MAX;
             return newValue;
         }
     }
