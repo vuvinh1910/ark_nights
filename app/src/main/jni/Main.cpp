@@ -165,8 +165,8 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
             ImGui::Text(oxorany("Defense Multiplie"));
             ImGui::SliderInt(oxorany("##PDefense"), &defense, 1, 1000);
 
-            ImGui::Text(oxorany("Attack Speed Multiplie (before deploy)"));
-            ImGui::SliderInt(oxorany("##PSpeed"), &attacksp, 1, 100);
+            ImGui::Text(oxorany("Attack Speed Multiplie"));
+            ImGui::SliderInt(oxorany("##PSpeed"), &attacksp, 1, 20);
 
             ImGui::Text(oxorany("SP Recovery Multiplie"));
             ImGui::SliderInt(oxorany("##PSpRecovery"), &sp_recovery, 1, 100);
@@ -177,6 +177,7 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 
         if (Tab == 2) {
             ImGui::Checkbox(oxorany("OneHit Kill"), &onehit);
+            ImGui::Checkbox(oxorany("GodMode"), &godMode);
             ImGui::Checkbox(oxorany("No Decrease DP"), &deploy);
             ImGui::Checkbox(oxorany("0 Card Cost"), &noCardCost);
             ImGui::Checkbox(oxorany("No Respawn Time"), &noRespawnTime);
@@ -224,9 +225,10 @@ void *Init_thread()
 	PollUnicodeChars();
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_hp"), 0), (void *) get_hp , (void **) &_get_hp);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("set_hp"), 1), (void *) set_hp , (void **) &_set_hp);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_atk"), 0), (void *) get_atk , (void **) &_get_atk);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_isFrozen"), 0), (void *) get_isFrozen , (void **) &_get_isFrozen);
-	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_attackSpeed"), 0), (void *) get_attackSpeed , (void **) &_get_attackSpeed);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_attackTime"), 0), (void *) get_attackTime , (void **) &_get_attackTime);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity.SpController") , oxorany("_RecoverMp"), 2), (void *) SkillPointController , (void **) &_SkillPointController);
 
     sideType = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BObject") , oxorany("<side>k__BackingField"));

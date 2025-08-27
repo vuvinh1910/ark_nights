@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit;
+bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode;
 uintptr_t sideType, m_owner, respawnState;
 
 enum class GameResult
@@ -76,19 +76,19 @@ FP get_atk(void *instance) {
 	return _get_atk(instance);
 }
 
-FP (*_get_attackSpeed)(void *instance);
-FP get_attackSpeed(void *instance) {
-	if (instance != NULL && attacksp > 1)
-	{
-		SideType side = *(SideType *)((uintptr_t) instance + sideType);
-		if (side == SideType::ALLY)
-		{
-			FP speed;
-			speed._serializedValue = _get_attackSpeed(instance)._serializedValue * attacksp;
-			return speed;
-		}
-	}
-	return _get_attackSpeed(instance);
+FP (*_get_attackTime)(void *instance);
+FP get_attackTime(void *instance) {
+    if (instance != NULL && attacksp > 1)
+    {
+        SideType side = *(SideType *)((uintptr_t) instance + sideType);
+        if (side == SideType::ALLY)
+        {
+            FP attackTime;
+            attackTime._serializedValue = _get_attackTime(instance)._serializedValue / attacksp;
+            return attackTime;
+        }
+    }
+    return _get_attackTime(instance);
 }
 
 bool (*_get_isFrozen)(void *instance);
@@ -197,4 +197,34 @@ FP get_hp(void *instance) {
         }
     }
     return _get_hp(instance);
+}
+
+typedef FP (*OpImplicitDouble_t)(double value);
+static OpImplicitDouble_t op_Implicit_Double;
+FP DoubleToFP(double value) {
+    if (!op_Implicit_Double) {
+        const char* args[1] = { "System.Double" };
+        void* addr = Il2Cpp::GetMethodOffset(
+                "Torappu.Common.dll",
+                "Torappu",
+                "FP",
+                "op_Implicit",
+                (char**)args,
+                1
+        );
+        op_Implicit_Double = (OpImplicitDouble_t)addr;
+    }
+    return op_Implicit_Double(value);
+}
+
+void (*_set_hp)(void *instance, FP value);
+void set_hp(void *instance, FP value) {
+    if(instance != NULL && godMode) {
+        SideType side = *(SideType *)((uintptr_t) instance + sideType);
+        if (side == SideType::ALLY) {
+            FP newVal = DoubleToFP(456);
+            return _set_hp(instance,newVal);
+        }
+    }
+    _set_hp(instance,value);
 }
