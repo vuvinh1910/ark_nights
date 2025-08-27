@@ -5,3 +5,4 @@
 #include "Tools.h"
 #include "Jni_Stuff.h"
 #include "UnityInput.h"
+#include "DebugLog.h"

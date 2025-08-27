@@ -43,6 +43,7 @@ LOCAL_SRC_FILES := Main.cpp \
 	Includes/xdl/xdl_util.c \
 	Includes/oxorany/oxorany.cpp \
 	TuanMeta/Utils/Tools.cpp \
+	TuanMeta/Utils/DebugLog.cpp \
 	TuanMeta/IL2CppSDKGenerator/Il2Cpp.cpp \
 
 LOCAL_STATIC_LIBRARIES := libdobby

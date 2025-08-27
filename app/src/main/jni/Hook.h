@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode;
+bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint, preMaxLifePoint;
 uintptr_t sideType, m_owner, respawnState;
 
 enum class GameResult
@@ -38,21 +38,33 @@ struct FP {
 	long _serializedValue; //0x10
 };
 
-struct ACTkByte4 {
-    uint8_t b1;
-    uint8_t b2;
-    uint8_t b3;
-    uint8_t b4;
+struct ObscuredInt {
+    int currentCryptoKey;    // 0x10
+    int hiddenValue;         // 0x14
+    bool inited;             // 0x18
+    char pad_0x19[0x3];      // padding để nhảy tới 0x1C
+    int fakeValue;           // 0x1C
+    bool fakeValueActive;    // 0x20
+    char pad_0x21[0x3];      // padding để nhảy tới 0x24
 };
 
-struct ObscuredFloat {
-    int currentCryptoKey;
-    int hiddenValue;
-    ACTkByte4 hiddenValueOldByte4;
-    bool inited;
-    float fakeValue;
-    bool fakeValueActive;
-};
+typedef ObscuredInt (*OpImplicit_t)(int value);
+static OpImplicit_t ObscuredInt_OpImplicit;
+ObscuredInt IntToObscuredInt(int value) {
+    if(!ObscuredInt_OpImplicit) {
+        const char* args[1] = { "System.Int32" };
+        void* addr = Il2Cpp::GetMethodOffset(
+                "ThirdPartyAssembly.dll",
+                "CodeStage.AntiCheat.ObscuredTypes",
+                "ObscuredInt",
+                "op_Implicit",
+                (char**)args,
+                1
+        );
+        ObscuredInt_OpImplicit = (OpImplicit_t)addr;
+    }
+    return ObscuredInt_OpImplicit(value);
+}
 
 FP (*_get_atk)(void *instance);
 FP get_atk(void *instance) {
@@ -129,10 +141,32 @@ void DoFinishGame(void *instance, GameResult result, bool silent) {
     }
 }
 
+void DoSetLifePoint(void *instance, int value, int side) {
+    void (*_DoSetLifePoint)(void *, int, int) =
+    (void (*)(void *, int, int))(
+            GetMethodOffset(
+                    oxorany("Assembly-CSharp.dll"),
+                    oxorany("Torappu.Battle"),
+                    oxorany("BattleController"),
+                    oxorany("SetLifePoint"),
+                    2
+            )
+    );
+    if(_DoSetLifePoint) {
+        _DoSetLifePoint(instance,value,side);
+    }
+}
+
 void (*_BattleController)(void *instance);
 void BattleController(void *instance){
 	if (instance != NULL){
 		if (autowin) DoFinishGame(instance, GameResult::WIN, true);
+        if(maxLifePoint != preMaxLifePoint) {
+            if(maxLifePoint) {
+                DoSetLifePoint(instance,999,0);
+            }
+            preMaxLifePoint = maxLifePoint;
+        }
 	}
 	_BattleController(instance);
 }
@@ -227,4 +261,20 @@ void set_hp(void *instance, FP value) {
         }
     }
     _set_hp(instance,value);
+}
+
+bool (*_ModifyLifePoint)(void *instance, int value, void *source, int side, bool isReach);
+bool ModifyLifePoint(void *instance, int value, void *source, int side, bool isReach) {
+    if(instance != NULL && freezeLifePoint) {
+        return false;
+    }
+    return _ModifyLifePoint(instance,value,source,side,isReach);
+}
+
+bool (*_get_dontOccupyDeployCnt)(void *instance);
+bool get_dontOccupyDeployCnt(void *instance) {
+    if(instance != NULL && unlimitUnit) {
+        return true;
+    }
+    return _get_dontOccupyDeployCnt(instance);
 }

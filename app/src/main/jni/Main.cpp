@@ -122,8 +122,8 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) window_flags = menu ? ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar : ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
 	if (ui_dpi_scale < 0.5f) window_flags = menu ? ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar : ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground;
 	
-	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) ImGui::SetNextWindowSize(ImVec2(700 * ui_dpi_scale, 600 * ui_dpi_scale));
-	if (ui_dpi_scale < 0.5f) ImGui::SetNextWindowSize(ImVec2(700 * ui_dpi_scale - 100, 600 * ui_dpi_scale - 80));
+	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) ImGui::SetNextWindowSize(ImVec2(740 * ui_dpi_scale, 640 * ui_dpi_scale));
+	if (ui_dpi_scale < 0.5f) ImGui::SetNextWindowSize(ImVec2(740 * ui_dpi_scale - 100, 640 * ui_dpi_scale - 80));
 	
 	if (ImGui::Begin(OBFUSCATE("Menu"), nullptr, window_flags))
 	{
@@ -147,7 +147,12 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
         ImGui::PushStyleColor(ImGuiCol_Button, Tab == 2 ? active : inactive);
         if (ImGui::Button(oxorany("B"), ImVec2(120, 50))) Tab = 2;
         ImGui::PopStyleColor();
+
+        ImGui::PushStyleColor(ImGuiCol_Button, Tab == 3 ? active : inactive);
+        if (ImGui::Button(oxorany("Log"), ImVec2(120, 50))) Tab = 3;
+        ImGui::PopStyleColor();
         ImGui::PopStyleVar();
+
         ImGui::NextColumn();
         ImVec2 contentRegion = ImGui::GetContentRegionAvail();
         ImVec2 textSize = ImGui::CalcTextSize(window_name);
@@ -182,6 +187,18 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
             ImGui::Checkbox(oxorany("0 Card Cost"), &noCardCost);
             ImGui::Checkbox(oxorany("No Respawn Time"), &noRespawnTime);
             ImGui::Checkbox(oxorany("Free Deploy"), &freeDeploy);
+            ImGui::Checkbox(oxorany("No Unit Limit"), &unlimitUnit);
+            ImGui::Checkbox(oxorany("Freeze LifePoint"), &freezeLifePoint);
+            ImGui::Checkbox(oxorany("999 LifePoint"), &maxLifePoint);
+        }
+
+        if (Tab == 3) {
+            ImGui::Text(oxorany("Debug Logs:"));
+            ImGui::BeginChild("DebugRegion", ImVec2(0, 400), true);
+            for (auto& line : GetDebugLogs()) {
+                ImGui::TextUnformatted(line.c_str());
+            }
+            ImGui::EndChild();
         }
 
         ImGui::End();
@@ -236,9 +253,11 @@ void *Init_thread()
     respawnState = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("ignoreRespawningState"));
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyLifePoint"), 4), (void *) ModifyLifePoint , (void **) &_ModifyLifePoint);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("OnTick"), 0), (void *) BattleController , (void **) &_BattleController);
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_cost"), 0), (void *) get_cost , (void **) &_get_cost);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_dontOccupyDeployCnt"), 0), (void *) get_dontOccupyDeployCnt , (void **) &_get_dontOccupyDeployCnt);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("OnTick"), 1), (void *) CardController, (void **) &_CardController);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck") , oxorany("OnCardListChanged"), 1), (void *) OnCardListChanged , (void **) &_OnCardListChanged);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_readyToSpawn"), 0), (void *) get_readyToSpawn , (void **) &_get_readyToSpawn);
