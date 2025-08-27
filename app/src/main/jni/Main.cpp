@@ -124,7 +124,7 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 	
 	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) ImGui::SetNextWindowSize(ImVec2(740 * ui_dpi_scale, 640 * ui_dpi_scale));
 	if (ui_dpi_scale < 0.5f) ImGui::SetNextWindowSize(ImVec2(740 * ui_dpi_scale - 100, 640 * ui_dpi_scale - 80));
-	
+
 	if (ImGui::Begin(OBFUSCATE("Menu"), nullptr, window_flags))
 	{
 		ImGui::Columns(2);

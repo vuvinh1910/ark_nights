@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint, preMaxLifePoint;
+bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint;
 uintptr_t sideType, m_owner, respawnState;
 
 enum class GameResult
@@ -161,12 +161,7 @@ void (*_BattleController)(void *instance);
 void BattleController(void *instance){
 	if (instance != NULL){
 		if (autowin) DoFinishGame(instance, GameResult::WIN, true);
-        if(maxLifePoint != preMaxLifePoint) {
-            if(maxLifePoint) {
-                DoSetLifePoint(instance,999,0);
-            }
-            preMaxLifePoint = maxLifePoint;
-        }
+        if(maxLifePoint) DoSetLifePoint(instance,999,0);
 	}
 	_BattleController(instance);
 }
