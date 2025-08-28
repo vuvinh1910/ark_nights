@@ -125,6 +125,7 @@ C:\Users\Administrator\Desktop\ark_nights\app\build\intermediates\cxx\Debug\2z3s
   C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\Tools.h \
   C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\Jni_Stuff.h \
   C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\UnityInput.h \
+  C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\DebugLog.h \
   C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\Hook.h \
   C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\Zygisk.hpp
 
@@ -377,6 +378,8 @@ C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\Tools.
 C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\Jni_Stuff.h:
 
 C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\UnityInput.h:
+
+C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\TuanMeta\Utils\DebugLog.h:
 
 C:\Users\Administrator\Desktop\ark_nights\app\src\main\jni\Hook.h:
 

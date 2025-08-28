@@ -1,7 +1,7 @@
-#Thu Aug 28 15:26:32 ICT 2025
-base.1=C\:\\Users\\Administrator\\Desktop\\ark_nightsv2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
+#Thu Aug 28 17:16:07 ICT 2025
+base.1=C\:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
 path.1=15/classes.dex
-base.0=C\:\\Users\\Administrator\\Desktop\\ark_nightsv2\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.0=C\:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
 path.0=0/classes.dex

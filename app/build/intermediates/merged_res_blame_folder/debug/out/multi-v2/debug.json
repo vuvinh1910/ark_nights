@@ -4,24 +4,26 @@
             "outputFile": "com.tuanmeta.cheat.app-merged_res-5:/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\Administrator\\Desktop\\ark_nightsv2\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\res\\values\\themes.xml",
                     "from": {
-                        "startLines": "1",
+                        "startLines": "2",
                         "startColumns": "4",
-                        "startOffsets": "17",
-                        "endColumns": "42",
-                        "endOffsets": "55"
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "256"
                     },
                     "to": {
-                        "startLines": "3",
+                        "startLines": "4",
                         "startColumns": "4",
-                        "startOffsets": "105",
-                        "endColumns": "42",
-                        "endOffsets": "143"
+                        "startOffsets": "148",
+                        "endLines": "7",
+                        "endColumns": "12",
+                        "endOffsets": "311"
                     }
                 },
                 {
-                    "source": "C:\\Users\\Administrator\\Desktop\\ark_nightsv2\\app\\src\\main\\res\\values\\colors.xml",
+                    "source": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -38,22 +40,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Administrator\\Desktop\\ark_nightsv2\\app\\src\\main\\res\\values\\themes.xml",
+                    "source": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
-                        "startLines": "2",
+                        "startLines": "1",
                         "startColumns": "4",
-                        "startOffsets": "55",
-                        "endLines": "5",
-                        "endColumns": "12",
-                        "endOffsets": "256"
+                        "startOffsets": "17",
+                        "endColumns": "42",
+                        "endOffsets": "55"
                     },
                     "to": {
-                        "startLines": "4",
+                        "startLines": "3",
                         "startColumns": "4",
-                        "startOffsets": "148",
-                        "endLines": "7",
-                        "endColumns": "12",
-                        "endOffsets": "311"
+                        "startOffsets": "105",
+                        "endColumns": "42",
+                        "endOffsets": "143"
                     }
                 }
             ]
