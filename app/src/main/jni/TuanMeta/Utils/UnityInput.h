@@ -17,7 +17,6 @@ namespace TouchInput {
         if (outEventPtr && *outEventPtr) {
             AInputEvent* event = reinterpret_cast<AInputEvent*>(*outEventPtr);
             ImGui_ImplAndroid_HandleInputEvent(event);
-            AddDebugLog("[TouchInput] Event consumed: type=%d", AInputEvent_getType(event));
         }
 
         return result;
