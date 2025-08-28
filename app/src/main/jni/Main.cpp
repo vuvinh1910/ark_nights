@@ -143,7 +143,7 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 		
 		static ImVec4 active = to_vec4(0, 150, 255, 255);
 		static ImVec4 inactive = to_vec4(0, 0, 0, 0);
-        static int Tab = 1;
+        static int Tab = 3;
 
         ImGui::Spacing();
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.6f);
@@ -232,16 +232,21 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 	return orig_eglSwapBuffers(dpy, surface);
 }
 
-ProcMap il2cppMap;
+uintptr_t il2cppBase = 0;
 void *Init_thread()
 {
 	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libandroid.so"), OBFUSCATE("ANativeWindow_getWidth")), (void *) _ANativeWindow_getWidth, (void **) &orig_ANativeWindow_getWidth);
 	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libandroid.so"), OBFUSCATE("ANativeWindow_getHeight")), (void *) _ANativeWindow_getHeight, (void **) &orig_ANativeWindow_getHeight);
     Tools::Hook((void *) DobbySymbolResolver("/system/lib/libEGL.so", "eglSwapBuffers"), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
-    while (!il2cppMap.isValid()) {
-        il2cppMap = KittyMemory::getLibraryBaseMap("libil2cpp.so");
-        sleep(1);
+
+    while (il2cppBase == 0) {
+        il2cppBase = KittyMemory::findIl2cppBase();
+        if (!il2cppBase) {
+            AddDebugLog("Waiting for libil2cpp.so to load...");
+            sleep(1);
+        }
     }
+    AddDebugLog("libil2cpp.so loaded at %p", (void*)il2cppBase);
 
 	Attach();
 	PollUnicodeChars();

@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <vector>
+#include <link.h>
 
 #define _SYS_PAGE_SIZE_ (sysconf(_SC_PAGE_SIZE))
 
@@ -82,6 +83,20 @@ namespace KittyMemory
      * Gets info of all maps which contain "name" in self process
      */
     std::vector<ProcMap> getMapsByName(const std::string& name);
+
+    inline uintptr_t findIl2cppBase() {
+        uintptr_t il2cppBase = 0;
+        dl_iterate_phdr([](struct dl_phdr_info *info, size_t size, void *data) -> int {
+            if (info->dlpi_name && strstr(info->dlpi_name, "libil2cpp.so")) {
+                uintptr_t *outBase = (uintptr_t*)data;
+                *outBase = info->dlpi_addr;
+                KITTY_LOGI("dl_iterate_phdr found %s at %p", info->dlpi_name, (void*)info->dlpi_addr);
+                return 1; // stop iteration
+            }
+            return 0;
+        }, &il2cppBase);
+        return il2cppBase;
+    }
 
     /*
      * Gets map info of an address in self process
