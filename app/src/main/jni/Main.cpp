@@ -32,43 +32,51 @@ public:
 	}
 
 private:
-	Api *api;
-	JNIEnv *env;
-	bool enable_hack;
-	char *game_data_dir;
-	void *data;
-	size_t length;
+    Api *api = nullptr;
+    JNIEnv *env = nullptr;
+    bool enable_hack = false;
+    char *game_data_dir = nullptr;
+    void *data = nullptr;
+    size_t length = 0;
 
-	void preSpecialize(const char *package_name, const char *app_data_dir) {
-		if (strcmp(package_name, "com.YoStarEN.Arknights") == 0 || strcmp(package_name, "com.YoStarJP.Arknights") == 0) {
-			LOGI("detect game: %s", package_name);
-			enable_hack = true;
-			game_data_dir = new char[strlen(app_data_dir) + 1];
-			strcpy(game_data_dir, app_data_dir);
+    void preSpecialize(const char *package_name, const char *app_data_dir) {
+        if (strcmp(package_name, "com.YoStarEN.Arknights") == 0 ||
+            strcmp(package_name, "com.YoStarJP.Arknights") == 0) {
+
+            LOGI("detect game: %s", package_name);
+            enable_hack = true;
+            game_data_dir = strdup(app_data_dir); // dễ quản lý hơn new[]
 
 #if defined(__i386__)
-			auto path = "zygisk/armeabi-v7a.so";
+            const char *path = "zygisk/x86.so";
+#elif defined(__x86_64__)
+            const char *path = "zygisk/x86_64.so";
+#elif defined(__arm__)
+            const char *path = "zygisk/armeabi-v7a.so";
+#elif defined(__aarch64__)
+            const char *path = "zygisk/arm64-v8a.so";
 #endif
-#if defined(__x86_64__)
-			auto path = "zygisk/arm64-v8a.so";
-#endif
-#if defined(__i386__) || defined(__x86_64__)
-			int dirfd = api->getModuleDir();
-			int fd = openat(dirfd, path, O_RDONLY);
-			if (fd != -1) {
-				struct stat sb{};
-				fstat(fd, &sb);
-				length = sb.st_size;
-				data = mmap(nullptr, length, PROT_READ, MAP_PRIVATE, fd, 0);
-				close(fd);
-			} else {
-				LOGW("Unable to open arm file");
-			}
-#endif
-		} else {
-			api->setOption(zygisk::Option::DLCLOSE_MODULE_LIBRARY);
-		}
-	}
+
+            int dirfd = api->getModuleDir();
+            int fd = openat(dirfd, path, O_RDONLY);
+            if (fd != -1) {
+                struct stat sb{};
+                if (fstat(fd, &sb) == 0) {
+                    length = sb.st_size;
+                    data = mmap(nullptr, length, PROT_READ, MAP_PRIVATE, fd, 0);
+                    if (data == MAP_FAILED) {
+                        LOGW("mmap failed");
+                        data = nullptr;
+                    }
+                }
+                close(fd);
+            } else {
+                LOGW("Unable to open so file: %s", path);
+            }
+        } else {
+            api->setOption(zygisk::Option::DLCLOSE_MODULE_LIBRARY);
+        }
+    }
 };
 
 REGISTER_ZYGISK_MODULE(MyModule)
