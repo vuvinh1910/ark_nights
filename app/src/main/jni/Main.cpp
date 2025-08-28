@@ -237,15 +237,12 @@ void *Init_thread()
 {
 	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libandroid.so"), OBFUSCATE("ANativeWindow_getWidth")), (void *) _ANativeWindow_getWidth, (void **) &orig_ANativeWindow_getWidth);
 	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libandroid.so"), OBFUSCATE("ANativeWindow_getHeight")), (void *) _ANativeWindow_getHeight, (void **) &orig_ANativeWindow_getHeight);
-	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libEGL.so"), OBFUSCATE("eglSwapBuffers")), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
+    while (!il2cppMap.isValid()) {
+        il2cppMap = KittyMemory::getLibraryBaseMap("libil2cpp.so");
+        sleep(1);
+    }
+    Tools::Hook((void *) DobbySymbolResolver("/system/lib/libEGL.so", "eglSwapBuffers"), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
 
-	while (!il2cppMap.isValid()) {
-		il2cppMap = KittyMemory::getLibraryBaseMap("libil2cpp.so");
-		sleep(1);
-	}
-	
-	Tools::Hook((void *) DobbySymbolResolver(OBFUSCATE("/system/lib/libEGL.so"), OBFUSCATE("eglSwapBuffers")), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
-	
 	Attach();
 	PollUnicodeChars();
 
