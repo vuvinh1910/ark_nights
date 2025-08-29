@@ -189,6 +189,9 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
         }
 
         if (Tab == 2) {
+            if (ImGui::Button(oxorany("999 LifePoint"))) {
+                maxLifePoint = true;
+            }
             ImGui::Checkbox(oxorany("OneHit Kill"), &onehit);
             ImGui::Checkbox(oxorany("GodMode"), &godMode);
             ImGui::Checkbox(oxorany("No Decrease DP"), &deploy);
@@ -197,7 +200,6 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
             ImGui::Checkbox(oxorany("Free Deploy"), &freeDeploy);
             ImGui::Checkbox(oxorany("No Unit Limit"), &unlimitUnit);
             ImGui::Checkbox(oxorany("Freeze LifePoint"), &freezeLifePoint);
-            ImGui::Checkbox(oxorany("999 LifePoint"), &maxLifePoint);
         }
 
         if (Tab == 3) {

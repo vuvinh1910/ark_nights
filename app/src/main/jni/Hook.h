@@ -154,6 +154,7 @@ void DoSetLifePoint(void *instance, int value, int side, bool force) {
     );
     if(_DoSetLifePoint) {
         _DoSetLifePoint(instance,value,side,force);
+        maxLifePoint = false;
     }
 }
 
