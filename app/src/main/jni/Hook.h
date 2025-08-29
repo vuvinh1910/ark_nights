@@ -212,7 +212,7 @@ void CardController(void *instance, void *deltaTime) {
     if (instance != NULL && noRespawnTime) {
         *(bool *)((uintptr_t)instance + respawnState) = true;
     }
-    return _CardController(instance, deltaTime);
+    _CardController(instance, deltaTime);
 }
 
 FP (*_get_hp)(void *instance);
