@@ -141,19 +141,19 @@ void DoFinishGame(void *instance, GameResult result, bool silent) {
     }
 }
 
-void DoSetLifePoint(void *instance, int value, int side) {
-    void (*_DoSetLifePoint)(void *, int, int) =
-    (void (*)(void *, int, int))(
+void DoSetLifePoint(void *instance, int value, int side, bool force) {
+    void (*_DoSetLifePoint)(void *, int, int, bool) =
+    (void (*)(void *, int, int, bool))(
             GetMethodOffset(
                     oxorany("Assembly-CSharp.dll"),
                     oxorany("Torappu.Battle"),
                     oxorany("BattleController"),
                     oxorany("SetLifePoint"),
-                    2
+                    3
             )
     );
     if(_DoSetLifePoint) {
-        _DoSetLifePoint(instance,value,side);
+        _DoSetLifePoint(instance,value,side,force);
     }
 }
 
@@ -161,7 +161,7 @@ void (*_BattleController)(void *instance);
 void BattleController(void *instance){
 	if (instance != NULL){
 		if (autowin) DoFinishGame(instance, GameResult::WIN, true);
-        if(maxLifePoint) DoSetLifePoint(instance,999,0);
+        if(maxLifePoint) DoSetLifePoint(instance,999,0, true);
 	}
 	_BattleController(instance);
 }
