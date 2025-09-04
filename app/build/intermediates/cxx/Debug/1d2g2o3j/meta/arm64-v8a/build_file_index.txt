@@ -1,2 +1,0 @@
-C:\Users\Administrator\Desktop\ark_nightsv2\app\src\main\jni\Android.mk
-C:\Users\Administrator\Desktop\ark_nightsv2\app\src\main\jni\Application.mk
