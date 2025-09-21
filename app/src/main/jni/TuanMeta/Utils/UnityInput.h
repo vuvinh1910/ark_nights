@@ -53,6 +53,8 @@ namespace TouchInput {
             } else {
                 AddDebugLog("[TouchInput] HookOldInitializeMotion failed!");
             }
+        } else {
+            AddDebugLog("[TouchInput] initializeMotionEvent not found, fallback to consume...");
         }
 
         // 2. Nếu không có hàm cũ, hook Android 14/15
