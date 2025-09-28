@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint;
+bool frozen, deploy, autowin, killCnt, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint;
 uintptr_t sideType, m_owner, m_newRespawnTimePeriod;
 
 enum class GameResult
@@ -274,4 +274,12 @@ bool get_dontOccupyDeployCnt(void *instance) {
         return true;
     }
     return _get_dontOccupyDeployCnt(instance);
+}
+
+int (*_get_validKilledEnemiesCnt)(void *instance);
+int get_validKilledEnemiesCnt(void *instance) {
+    if(instance != NULL && killCnt) {
+        return 999;
+    }
+    return _get_validKilledEnemiesCnt(instance);
 }

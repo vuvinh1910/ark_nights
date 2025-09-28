@@ -130,7 +130,7 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) window_flags = menu ? ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar : ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
 	if (ui_dpi_scale < 0.5f) window_flags = menu ? ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar : ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground;
 	
-	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) ImGui::SetNextWindowSize(ImVec2(1280 * ui_dpi_scale, 640 * ui_dpi_scale));
+	if (ui_dpi_scale <= 1.0f && ui_dpi_scale >= 0.5f) ImGui::SetNextWindowSize(ImVec2(1280 * ui_dpi_scale, 670 * ui_dpi_scale));
 	if (ui_dpi_scale < 0.5f) ImGui::SetNextWindowSize(ImVec2(700 * ui_dpi_scale - 100, 600 * ui_dpi_scale - 80));
 
 	if (ImGui::Begin(OBFUSCATE("Menu"), nullptr, window_flags))
@@ -200,6 +200,7 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
             ImGui::Checkbox(oxorany("Free Deploy"), &freeDeploy);
             ImGui::Checkbox(oxorany("No Unit Limit"), &unlimitUnit);
             ImGui::Checkbox(oxorany("Freeze LifePoint"), &freezeLifePoint);
+            ImGui::Checkbox(oxorany("999 KillCount"), &killCnt);
         }
 
         if (Tab == 3) {
@@ -270,6 +271,7 @@ void *Init_thread()
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyLifePoint"), 4), (void *) ModifyLifePoint , (void **) &_ModifyLifePoint);
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("OnTick"), 0), (void *) BattleController , (void **) &_BattleController);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Scheduler") , oxorany("get_validKilledEnemiesCnt"), 0), (void *) get_validKilledEnemiesCnt , (void **) &_get_validKilledEnemiesCnt);
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_cost"), 0), (void *) get_cost , (void **) &_get_cost);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("get_dontOccupyDeployCnt"), 0), (void *) get_dontOccupyDeployCnt , (void **) &_get_dontOccupyDeployCnt);
