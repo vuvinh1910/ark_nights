@@ -11,11 +11,11 @@
       "fieldsDescending": {}
     },
     "memoizedSize": -1,
-    "memoizedHashCode": -1463509774
+    "memoizedHashCode": 1307600569
   },
   {
     "level_": 0,
-    "message_": "rebuilding JSON C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a\\android_gradle_build.json due to:",
+    "message_": "JSON \u0027C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a\\android_gradle_build.json\u0027 was up-to-date",
     "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
     "tag_": "debug|arm64-v8a",
     "diagnosticCode_": 0,
@@ -25,147 +25,7 @@
       "fieldsDescending": {}
     },
     "memoizedSize": -1,
-    "memoizedHashCode": 69373970
-  },
-  {
-    "level_": 0,
-    "message_": "- expected json C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a\\android_gradle_build.json file is not present, will remove stale json folder",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 958990558
-  },
-  {
-    "level_": 0,
-    "message_": "- missing previous command file C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a\\metadata_generation_command.txt, will remove stale json folder",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1008496708
-  },
-  {
-    "level_": 0,
-    "message_": "- command changed from previous, will remove stale json folder",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1986530528
-  },
-  {
-    "level_": 0,
-    "message_": "created folder \u0027C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a\u0027",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 77836658
-  },
-  {
-    "level_": 0,
-    "message_": "executing ndkBuild Executable : C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk\nNDK_APPLICATION_MK\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk\nAPP_ABI\u003darm64-v8a\nNDK_ALL_ABIS\u003darm64-v8a\nNDK_DEBUG\u003d1\nAPP_PLATFORM\u003dandroid-21\nNDK_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj\nNDK_LIBS_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 675173974
-  },
-  {
-    "level_": 0,
-    "message_": "Executable : C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk\\24.0.8215888\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk\nNDK_APPLICATION_MK\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk\nAPP_ABI\u003darm64-v8a\nNDK_ALL_ABIS\u003darm64-v8a\nNDK_DEBUG\u003d1\nAPP_PLATFORM\u003dandroid-21\nNDK_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/obj\nNDK_LIBS_OUT\u003dC:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\intermediates\\cxx\\Debug\\2z3s2w5k/lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 1870892713
-  },
-  {
-    "level_": 0,
-    "message_": "parse and convert ndk-build output to build configuration JSON",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 750953455
-  },
-  {
-    "level_": 0,
-    "message_": "found application make file C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Application.mk",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 871968391
-  },
-  {
-    "level_": 0,
-    "message_": "done executing ndkBuild",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": -1679167275
-  },
-  {
-    "level_": 0,
-    "message_": "write command file C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\build\\.cxx\\Debug\\2z3s2w5k\\arm64-v8a\\metadata_generation_command.txt",
-    "file_": "C:\\Users\\Administrator\\Desktop\\ark_nights\\app\\src\\main\\jni\\Android.mk",
-    "tag_": "debug|arm64-v8a",
-    "diagnosticCode_": 0,
-    "memoizedIsInitialized": 1,
-    "unknownFields": {
-      "fields": {},
-      "fieldsDescending": {}
-    },
-    "memoizedSize": -1,
-    "memoizedHashCode": 1536918662
+    "memoizedHashCode": -418144176
   },
   {
     "level_": 0,
@@ -179,6 +39,6 @@
       "fieldsDescending": {}
     },
     "memoizedSize": -1,
-    "memoizedHashCode": -360803695
+    "memoizedHashCode": -1884660648
   }
 ]

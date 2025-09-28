@@ -16,7 +16,7 @@
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
 bool frozen, deploy, autowin, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint;
-uintptr_t sideType, m_owner, respawnState;
+uintptr_t sideType, m_owner, m_newRespawnTimePeriod;
 
 enum class GameResult
 {
@@ -211,7 +211,8 @@ void OnCardListChanged(void *instance, void *card) {
 void (*_CardController)(void *instance, void *deltaTime);
 void CardController(void *instance, void *deltaTime) {
     if (instance != NULL && noRespawnTime) {
-        *(bool *)((uintptr_t)instance + respawnState) = true;
+        FP& value = *(FP *)((uintptr_t)instance + m_newRespawnTimePeriod);
+        value._serializedValue = value._serializedValue / INT_MAX;
     }
     _CardController(instance, deltaTime);
 }

@@ -265,7 +265,7 @@ void *Init_thread()
 
     sideType = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BObject") , oxorany("<side>k__BackingField"));
     m_owner = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity.SpController") , oxorany("m_owner"));
-    respawnState = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("ignoreRespawningState"));
+    m_newRespawnTimePeriod = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Deck.Card") , oxorany("m_newRespawnTimePeriod"));
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyCost"), 5), (void *) ModifyCost , (void **) &_ModifyCost);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleController") , oxorany("ModifyLifePoint"), 4), (void *) ModifyLifePoint , (void **) &_ModifyLifePoint);
