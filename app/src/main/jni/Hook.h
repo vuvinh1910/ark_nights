@@ -253,7 +253,7 @@ void set_hp(void *instance, FP value) {
     if(instance != NULL && godMode) {
         SideType side = *(SideType *)((uintptr_t) instance + sideType);
         if (side == SideType::ALLY) {
-            FP newVal = DoubleToFP(456);
+            FP newVal = DoubleToFP(100000);
             return _set_hp(instance,newVal);
         }
     }
