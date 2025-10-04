@@ -15,7 +15,7 @@
 #endif
 
 int dmg = 1, defense = 1, attacksp = 1, sp_recovery = 1;
-bool frozen, deploy, autowin, killCnt, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint;
+bool frozen, deploy, element, autowin, killCnt, noCardCost, freeDeploy, noRespawnTime, onehit, godMode, unlimitUnit, freezeLifePoint, maxLifePoint;
 uintptr_t sideType, m_owner, m_newRespawnTimePeriod;
 
 enum class GameResult
@@ -230,22 +230,25 @@ FP get_hp(void *instance) {
     return _get_hp(instance);
 }
 
-typedef FP (*OpImplicitDouble_t)(double value);
-static OpImplicitDouble_t op_Implicit_Double;
-FP DoubleToFP(double value) {
-    if (!op_Implicit_Double) {
-        const char* args[1] = { "System.Double" };
+typedef void (*FPConstructor)(void* instance, int value);
+static FPConstructor ctor_FP = nullptr;
+FP IntegerToFP(int value) {
+    if (!ctor_FP) {
+        const char* args[1] = { "System.Int32" };
         void* addr = Il2Cpp::GetMethodOffset(
                 "Torappu.Common.dll",
                 "Torappu",
                 "FP",
-                "op_Implicit",
+                ".ctor",
                 (char**)args,
                 1
         );
-        op_Implicit_Double = (OpImplicitDouble_t)addr;
+        ctor_FP = (FPConstructor) addr;
     }
-    return op_Implicit_Double(value);
+
+    FP result{};
+    ctor_FP(&result, value);
+    return result;
 }
 
 void (*_set_hp)(void *instance, FP value);
@@ -253,7 +256,7 @@ void set_hp(void *instance, FP value) {
     if(instance != NULL && godMode) {
         SideType side = *(SideType *)((uintptr_t) instance + sideType);
         if (side == SideType::ALLY) {
-            FP newVal = DoubleToFP(100000);
+            FP newVal = IntegerToFP(100000);
             return _set_hp(instance,newVal);
         }
     }
@@ -282,4 +285,15 @@ int get_validKilledEnemiesCnt(void *instance) {
         return 999;
     }
     return _get_validKilledEnemiesCnt(instance);
+}
+
+FP (*_CalculateElementDamage)(FP atk, void *target);
+FP CalculateElementDamage(FP atk, void *target) {
+    if(target && element) {
+        SideType side = *(SideType *)((uintptr_t) target + sideType);
+        if (side == SideType::ENEMY) {
+            atk = IntegerToFP(999999);
+        }
+    }
+    return _CalculateElementDamage(atk, target);
 }

@@ -185,6 +185,7 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
             ImGui::SliderInt(oxorany("##PSpRecovery"), &sp_recovery, 1, 100);
 
             ImGui::Checkbox(oxorany("Frozen Enemies"), &frozen);
+            ImGui::Checkbox(oxorany("BreakElement Enemy"), &element);
             ImGui::Checkbox(oxorany("Auto Win"), &autowin);
         }
 
@@ -263,6 +264,7 @@ void *Init_thread()
 	Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_isFrozen"), 0), (void *) get_isFrozen , (void **) &_get_isFrozen);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_attackTime"), 0), (void *) get_attackTime , (void **) &_get_attackTime);
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity.SpController") , oxorany("_RecoverMp"), 2), (void *) SkillPointController , (void **) &_SkillPointController);
+    Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BattleFormula") , oxorany("CalculateElementDamage"), 2), (void *) CalculateElementDamage , (void **) &_CalculateElementDamage);
 
     sideType = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("BObject") , oxorany("<side>k__BackingField"));
     m_owner = GetFieldOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity.SpController") , oxorany("m_owner"));
