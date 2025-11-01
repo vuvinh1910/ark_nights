@@ -99,17 +99,6 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 		io.Fonts->AddFontFromMemoryTTF(Inter, sizeof(Inter), 28.f, NULL, io.Fonts->GetGlyphRangesVietnamese());
 		interbold = io.Fonts->AddFontFromMemoryTTF(InterBold, sizeof(InterBold), 28.f, NULL, io.Fonts->GetGlyphRangesVietnamese());
 		
-		io.KeyMap[ImGuiKey_UpArrow] = 19;
-		io.KeyMap[ImGuiKey_DownArrow] = 20;
-		io.KeyMap[ImGuiKey_LeftArrow] = 21;
-		io.KeyMap[ImGuiKey_RightArrow] = 22;
-		io.KeyMap[ImGuiKey_Enter] = 66;
-		io.KeyMap[ImGuiKey_Backspace] = 67;
-		io.KeyMap[ImGuiKey_Escape] = 111;
-		io.KeyMap[ImGuiKey_Delete] = 112;
-		io.KeyMap[ImGuiKey_Home] = 122;
-		io.KeyMap[ImGuiKey_End] = 123;
-		
 		ImGui_ImplOpenGL3_Init("#version 300 es");
 		ImGui::GetStyle().ScaleAllSizes(3.0f);
 		loadImages();
@@ -117,9 +106,6 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 	}
 	
 	ImGuiIO& io = ImGui::GetIO();
-	static bool WantTextInputLast = false;
-	if (io.WantTextInput && !WantTextInputLast) ShowSoftKeyboardInput();
-	WantTextInputLast = io.WantTextInput;
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplAndroid_NewFrame(glWidth, glHeight);
@@ -220,19 +206,6 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface)
 	ImGui::EndFrame();
 	
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &glWidth);
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &glHeight);
-	
-	io.KeysDown[io.KeyMap[ImGuiKey_UpArrow]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_DownArrow]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_LeftArrow]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_RightArrow]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_Enter]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_Backspace]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_Delete]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_Escape]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_Home]] = false;
-	io.KeysDown[io.KeyMap[ImGuiKey_End]] = false;
 	return orig_eglSwapBuffers(dpy, surface);
 }
 
@@ -255,7 +228,6 @@ void *Init_thread()
     Tools::Hook((void *) DobbySymbolResolver("/system/lib/libEGL.so", "eglSwapBuffers"), (void *) hook_eglSwapBuffers, (void **) &orig_eglSwapBuffers);
 
 	Attach();
-	PollUnicodeChars();
     TouchInput::Init();
 
     Tools::Hook((void *) (uintptr_t) GetMethodOffset(oxorany("Assembly-CSharp.dll"), oxorany("Torappu.Battle"), oxorany("Entity") , oxorany("get_hp"), 0), (void *) get_hp , (void **) &_get_hp);
